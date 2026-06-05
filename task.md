@@ -6,9 +6,15 @@
 **Status:** Done.
 
 **What was done:**
-- Desktop: Restored individual cards with shadows for Canvases. Made the Controls column sticky instead of the canvases column, allowing smooth natural scrolling of long images while controls stay accessible.
-- Mobile: Used `display: contents` on `.panels-canvases` to let Preview become a sticky sibling to Controls. Visually linked Original and Preview cards using flush margins (`margin-bottom: -32px`) and shared border-radius, creating a split-card effect when scrolling.
-- Restored checkerboard background on mobile preview by removing opaque `#dstWrap` override.
+- `[x]` Desktop: Wrap workspace card contents in `.workspace-sticky-wrapper`.
+- `[x]` Desktop: Update `.panels` grid `align-items` to `stretch` (or remove `start`) so the workspace card stretches to the height of the controls.
+- `[x]` Desktop: Remove sticky positioning from the controls card.
+- `[x]` Desktop: Apply `position: sticky; top: 32px;` to `.workspace-sticky-wrapper`.
+- `[x]` Mobile: Update workspace card to be sticky at `top: 0` with `height: 30vh`.
+- `[x]` Mobile: Ensure the `.card-header` (with Result/Original toggle) remains visible and compact.
+- `[x]` Mobile: Make `.canvas-wrap` scale correctly within the remaining space of the 30vh sticky card.
+- `[x]` Mobile: Hide `.hint` inside the workspace card.
+- `[x]` Mobile: Remove previous sticky/glassmorphism overrides from the controls card.
 
 ---
 

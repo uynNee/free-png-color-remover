@@ -415,24 +415,30 @@
       .panels {
         grid-template-columns: 1.2fr 1fr;
         gap: 40px;
-        align-items: start;
+        align-items: stretch;
       }
 
-      .panels>.card:last-child {
+      .panels>.card:first-of-type {
+        height: 100%;
+      }
+
+      .workspace-sticky-wrapper {
         position: sticky;
         top: 32px;
+        display: flex;
+        flex-direction: column;
       }
 
-      .panels>.card:last-child::-webkit-scrollbar {
+      .panels>.card:last-of-type::-webkit-scrollbar {
         width: 6px;
       }
 
-      .panels>.card:last-child::-webkit-scrollbar-thumb {
+      .panels>.card:last-of-type::-webkit-scrollbar-thumb {
         background: var(--border);
         border-radius: 999px;
       }
 
-      .panels>.card:last-child:hover::-webkit-scrollbar-thumb {
+      .panels>.card:last-of-type:hover::-webkit-scrollbar-thumb {
         background: var(--ink-light);
       }
 
@@ -1190,33 +1196,59 @@
         gap: 16px;
       }
 
-      .panels .card:first-child {
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-        border-bottom: 1px dashed rgba(var(--shadow-color-rgb), 0.06);
-        margin-bottom: -16px;
-        position: relative;
-        z-index: 1;
-      }
-
-      .panels .card:last-child {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+      .panels .card:first-of-type {
         position: sticky;
         top: 0;
         z-index: 20;
-        box-shadow: 0 24px 48px -12px rgba(var(--shadow-color-rgb), 0.1);
-        backdrop-filter: blur(48px);
-        -webkit-backdrop-filter: blur(48px);
+        height: 30vh;
+        display: flex;
+        flex-direction: column;
+        padding: 12px 16px;
+        border-bottom-left-radius: var(--radius-lg);
+        border-bottom-right-radius: var(--radius-lg);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 8px 32px -8px rgba(var(--shadow-color-rgb), 0.08);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
         background: var(--bg-surface-glass-solid);
       }
 
-      .panels .card:last-child h2 {
+      .panels .card:first-of-type .workspace-sticky-wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .panels .card:first-of-type .card-header {
+        margin-bottom: 8px !important;
+      }
+
+      .panels .card:first-of-type .card-header h2 {
+        font-size: 14px;
+      }
+
+      .panels .card:first-of-type .hint {
         display: none;
       }
 
+      .panels .card:last-of-type {
+        border-top-left-radius: var(--radius-lg);
+        border-top-right-radius: var(--radius-lg);
+        position: relative;
+        top: auto;
+        z-index: 1;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        background: var(--bg-surface);
+        box-shadow: var(--shadow-card);
+      }
+
       #dstWrap {
-        max-height: 40vh;
+        flex: 1;
+        min-height: 0;
+        max-height: none;
+        margin: 0;
       }
 
       #dstWrap.solid {
@@ -1224,7 +1256,11 @@
       }
 
       #dstWrap canvas {
-        max-height: 30vh;
+        max-height: 100% !important;
+        max-width: 100% !important;
+        height: auto;
+        width: auto;
+        object-fit: contain;
       }
 
       .content th,
@@ -1455,19 +1491,21 @@
     <div class="panels" id="panels" style="display:none">
       <canvas id="src" style="display: none;"></canvas>
       <div class="card">
-        <div class="card-header"
-          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h2 style="margin: 0;">Workspace</h2>
-          <div class="seg" style="width: auto; margin: 0; padding: 4px;">
-            <button type="button" class="segbtn active" data-view="result"
-              style="padding: 6px 12px; font-size: 13px;">Result</button>
-            <button type="button" class="segbtn" data-view="original"
-              style="padding: 6px 12px; font-size: 13px;">Original</button>
+        <div class="workspace-sticky-wrapper">
+          <div class="card-header"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin: 0;">Workspace</h2>
+            <div class="seg" style="width: auto; margin: 0; padding: 4px;">
+              <button type="button" class="segbtn active" data-view="result"
+                style="padding: 6px 12px; font-size: 13px;">Result</button>
+              <button type="button" class="segbtn" data-view="original"
+                style="padding: 6px 12px; font-size: 13px;">Original</button>
+            </div>
           </div>
+          <div class="canvas-wrap" id="dstWrap"><canvas id="dst"></canvas></div>
+          <p class="hint">👆 Click to sample a color &middot; <kbd>Hold
+              Space</kbd> to peek original</p>
         </div>
-        <div class="canvas-wrap" id="dstWrap"><canvas id="dst"></canvas></div>
-        <p class="hint">👆 Click to sample a color &middot; <kbd>Hold
-            Space</kbd> to peek original</p>
       </div>
       <div class="card">
         <div class="controls">
