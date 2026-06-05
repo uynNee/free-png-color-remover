@@ -3,31 +3,12 @@
 ---
 
 ## 1. Canvas Layout: Mobile & Desktop Sizing
-**Problem:** On mobile, both `.card` panels stack vertically (1-column grid) but each canvas uses `max-height: 55vh`. Original + Preview together consume 110vh+ before controls render — forces scroll, hard to see what's happening. On desktop the image can feel too small if the image is portrait.
+**Status:** Done.
 
-**[NEW] Status:** Partially done — sizing fixed, visual polish still needed.
-
-**Goal:** Canvas fills full card width on mobile (natural aspect ratio, no artificial height cap that wastes space). Desktop: big enough to work with but doesn't dominate. No content cut off above the fold.
-
-**[NEW] What was done:**
-- Removed `max-height: 55vh` cap on mobile; canvas now fills card width at natural aspect ratio
-- Desktop bumped to `60vh`, then restructured to full `100vh` sticky left column
-- HTML restructured: original + preview canvases in `.panels-canvases` wrapper (left col), controls in separate card (right col)
-- Mobile: preview card is `position: sticky; top: 0` so it pins while controls scroll beneath
-
-**[NEW] Remaining visual issues:**
-- Desktop unified card column (`.panels-canvases`) — the two stacked sections (Original / Preview) may still look off depending on image sizes and proportions. Inner cards have `padding: 20px 24px`, divider line between them. No individual shadows.
-- Mobile: 3 cards now visible (Original, sticky Preview, Controls). Can feel heavy/disconnected. Original card has full shadow/border weight. No visual cue linking canvas cards together.
-- Checkerboard background on `.canvas-wrap` used `transparent` gaps — content behind sticky showed through. Fixed with `background-color: #E8EDF3` as base + solid white on `#dstWrap` mobile sticky.
-
-**Where to look:**
-- `.canvas-wrap` → `max-height: 55vh` (line ~372)
-- `canvas` → `max-height: 55vh; max-width: 100%` (line ~394)
-- `@media (max-width: 900px)` block (line ~1019)
-- [NEW]:
-- `.panels-canvases` CSS — global + `@media (min-width: 900px)` block
-- `@media (max-width: 900px)` — `.panels-canvases .card:last-child` sticky rules
-- `#dstWrap` mobile overrides
+**What was done:**
+- Desktop: Restored individual cards with shadows for Canvases. Made the Controls column sticky instead of the canvases column, allowing smooth natural scrolling of long images while controls stay accessible.
+- Mobile: Used `display: contents` on `.panels-canvases` to let Preview become a sticky sibling to Controls. Visually linked Original and Preview cards using flush margins (`margin-bottom: -32px`) and shared border-radius, creating a split-card effect when scrolling.
+- Restored checkerboard background on mobile preview by removing opaque `#dstWrap` override.
 
 ---
 
@@ -63,3 +44,14 @@ Varied brush size. Works on the preview canvas.
 - `applyRemoval()` seed flood (line ~1619) — no `edgeonly` check
 - `applyRemoval()` color path edge-only branch (line ~1663)
 - `edgeonly` toggle listener (line ~1809)
+
+---
+
+## 5. UI Overhaul & Color Wheel Integration
+**Status:** Done.
+
+**What was done:**
+- Remove `swatches` and default `input[type="color"]`.
+- Add `iro.js` via CDN to embed a responsive, beautiful color wheel inside the controls panel.
+- Completely redesign the CSS for `.panels`, `.panels-canvases`, `.card` and controls to create a sleek, premium Layout (Sidebar on Desktop, polished Bottom Sheet layout on Mobile).
+- Implement beautiful micro-interactions, custom scrollbars, and refined sliders.
