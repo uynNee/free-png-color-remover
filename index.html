@@ -371,17 +371,24 @@
       color: var(--ink-light);
       cursor: pointer;
       box-shadow: var(--shadow-float);
-      transition: all 0.4s var(--spring);
+      transition: transform 0.25s var(--spring), border-color 0.2s ease, color 0.2s ease, box-shadow 0.25s var(--spring);
       position: relative;
       z-index: 10;
     }
 
-    .drop:hover {
+    .drop:hover,
+    .drop.hover {
       transform: scale(1.02) translateY(-8px);
       border-color: var(--brand);
       border-style: solid;
       color: var(--brand);
       box-shadow: 0 32px 64px -16px rgba(var(--color-brand-rgb), 0.1);
+    }
+
+    .drop:active {
+      transform: scale(0.98) translateY(-4px);
+      box-shadow: 0 12px 24px -8px rgba(var(--color-brand-rgb), 0.15);
+      transition: transform 0.1s var(--spring), box-shadow 0.1s var(--spring);
     }
 
     .drop b {
@@ -395,10 +402,11 @@
     .drop .ic {
       font-size: 56px;
       display: block;
-      transition: transform 0.4s var(--spring);
+      transition: transform 0.25s var(--spring);
     }
 
-    .drop:hover .ic {
+    .drop:hover .ic,
+    .drop.hover .ic {
       transform: scale(1.15) rotate(5deg);
     }
 
@@ -687,6 +695,14 @@
     input[type=range]:active::-moz-range-thumb {
       transform: scale(1.1);
       box-shadow: 0 6px 16px rgba(var(--color-brand-rgb), 0.3);
+    }
+
+    .bg-preview-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      position: relative;
     }
 
     /* Custom Toggles */
@@ -1263,6 +1279,21 @@
         object-fit: contain;
       }
 
+      .bg-preview-row {
+        gap: 8px 12px;
+      }
+
+      .bg-preview-row small {
+        width: 100%;
+        margin-top: -4px;
+        margin-left: 62px;
+      }
+
+      .btn-row {
+        flex-direction: column;
+        gap: 12px;
+      }
+
       .content th,
       .content td {
         padding: 12px 16px;
@@ -1483,8 +1514,8 @@
         <div id="drop" class="drop">
           <span class="ic">🖼️</span>
           <b>Drop your image here</b> click to browse, or paste (Ctrl+V)
-          <input id="file" type="file" accept="image/*" hidden>
         </div>
+        <input id="file" type="file" accept="image/png, image/jpeg, image/webp" hidden>
       </div>
     </header>
 
@@ -1545,9 +1576,13 @@
             </div>
           </div>
 
-          <label class="toggle" style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
-            <input id="edgeonly" type="checkbox"><span class="switch"></span>
-            Edge-only mode <small style="margin-left: 4px;">&middot; preserves interior matching colors</small>
+          <label class="toggle" style="display: flex; align-items: flex-start; gap: 10px;">
+            <input id="edgeonly" type="checkbox"><span class="switch" style="flex-shrink: 0; margin-top: 2px;"></span>
+            <span style="font-weight: 600; font-size: 15px; line-height: 1.4;">
+              Edge-only mode
+              <small style="display: block; margin-top: 2px; font-weight: 400;">preserves interior matching
+                colors</small>
+            </span>
           </label>
 
           <label class="toggle">
@@ -1557,7 +1592,7 @@
 
           <div id="cropinfo" style="display:none"></div>
 
-          <div style="display: inline-flex; gap: 10px; align-items: center; position: relative;">
+          <div class="bg-preview-row">
             <label class="toggle">
               <input id="bgon" type="checkbox"><span class="switch"></span>
               Preview background
