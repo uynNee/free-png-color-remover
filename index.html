@@ -829,14 +829,83 @@
     }
 
     .brush-editor-cursor {
-      position: absolute;
+      position: fixed;
       border: 2px solid rgba(255, 255, 255, 0.8);
       border-radius: 50%;
       pointer-events: none;
       transform: translate(-50%, -50%);
-      z-index: 10;
+      z-index: 10005;
       display: none;
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+      transition: opacity 0.15s ease;
+    }
+
+    .brush-cursor-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .brush-editor-cursor.previewing {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .picker-tooltip {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      background: rgba(30, 30, 32, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      color: var(--color-white);
+      font-family: inherit;
+      transition: opacity 0.15s ease;
+      transform: translate(-50%, -120%);
+    }
+
+    .picker-tooltip-color {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+      flex-shrink: 0;
+    }
+
+    .picker-tooltip-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .picker-tooltip-hex {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-family: monospace;
+    }
+
+    .picker-tooltip-pos {
+      font-size: 11px;
+      color: var(--color-neutral-400);
+      font-weight: 500;
+    }
+
+    #dst {
+      touch-action: none;
     }
 
     .brush-panel {
@@ -880,10 +949,8 @@
     .switch::after {
       content: '';
       position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: var(--color-white);
       transition: transform 0.3s var(--spring);
@@ -895,7 +962,7 @@
     }
 
     .toggle input:checked+.switch::after {
-      transform: translateX(22px);
+      transform: translateX(20px);
     }
 
     small {
@@ -1816,7 +1883,9 @@
       <div class="brush-editor-workspace" id="brushWorkspace">
         <canvas id="editorBaseCanvas"></canvas>
         <canvas id="editorDrawCanvas"></canvas>
-        <div class="brush-editor-cursor" id="brushCursor"></div>
+        <div class="brush-editor-cursor" id="brushCursor">
+          <div class="brush-cursor-dot"></div>
+        </div>
       </div>
       <div class="brush-editor-bottombar">
         <div class="brush-editor-controls">
@@ -1828,11 +1897,20 @@
             <span>Size</span>
             <input id="brushSize" type="range" min="1" max="100" value="30" style="--fill: 30%;">
           </div>
-          <button id="brushClear" type="button" class="sec"
-            style="padding: 8px 16px; font-size: 14px; background: transparent; color: var(--color-neutral-300); border-color: var(--color-neutral-600);">Clear
-            Mask</button>
+          <label class="toggle" style="color: var(--color-neutral-300); font-size: 14px;">
+            <input id="brushOffset" type="checkbox"><span class="switch"></span>
+            <span style="font-weight: 500;">Offset Touch</span>
+          </label>
         </div>
         <div class="brush-editor-actions">
+          <button id="brushUndo" type="button" class="sec"
+            style="padding: 8px 12px; font-size: 14px; background: transparent; color: var(--color-neutral-400); border-color: var(--color-neutral-600);"
+            disabled>Undo</button>
+          <button id="brushRedo" type="button" class="sec"
+            style="padding: 8px 12px; font-size: 14px; background: transparent; color: var(--color-neutral-400); border-color: var(--color-neutral-600);"
+            disabled>Redo</button>
+          <button id="brushClear" type="button" class="sec"
+            style="padding: 8px 12px; font-size: 14px; background: transparent; color: var(--color-neutral-300); border-color: var(--color-neutral-600);">Clear</button>
           <button id="brushApply" type="button" style="padding: 10px 24px;">Apply Mask</button>
         </div>
       </div>
@@ -1845,6 +1923,15 @@
         <div id="bg-color-wheel-mobile"></div>
         <button id="closeBgPicker" type="button" class="sec"
           style="width: 100%; padding: 12px; margin-top: 8px;">Done</button>
+      </div>
+    </div>
+
+    <!-- Color Picker Detail Tooltip -->
+    <div id="pickerTooltip" class="picker-tooltip" style="display: none;">
+      <div class="picker-tooltip-color" id="pickerTooltipColor"></div>
+      <div class="picker-tooltip-info">
+        <div class="picker-tooltip-hex" id="pickerTooltipHex">#ffffff</div>
+        <div class="picker-tooltip-pos" id="pickerTooltipPos">X: 0, Y: 0</div>
       </div>
     </div>
 
@@ -2078,12 +2165,14 @@
         r.readAsDataURL(file);
       }
 
-      dstC.addEventListener('click', e => {
-        if (!srcImageData) return;
+      let isPointerDown = false;
+
+      function getCanvasCoords(clientX, clientY) {
+        if (!srcImageData) return null;
         const rect = dstC.getBoundingClientRect();
         const W = dstC.width, H = dstC.height;
-        const x = Math.floor((e.clientX - rect.left) * W / rect.width);
-        const y = Math.floor((e.clientY - rect.top) * H / rect.height);
+        const x = Math.floor((clientX - rect.left) * W / rect.width);
+        const y = Math.floor((clientY - rect.top) * H / rect.height);
 
         let origX = x;
         let origY = y;
@@ -2091,20 +2180,95 @@
           origX = x + currentBBox.x;
           origY = y + currentBBox.y;
         }
+        return { x: origX, y: origY };
+      }
+
+      function updateTooltipPosition(clientX, clientY) {
+        const tooltip = document.getElementById('pickerTooltip');
+        let top = clientY - 55;
+        let left = clientX;
+
+        if (top < 10) {
+          top = clientY + 35;
+        }
+        const width = 120;
+        if (left < width / 2 + 10) left = width / 2 + 10;
+        else if (left > window.innerWidth - width / 2 - 10) left = window.innerWidth - width / 2 - 10;
+
+        tooltip.style.top = `${top}px`;
+        tooltip.style.left = `${left}px`;
+      }
+
+      function handleCanvasMove(clientX, clientY) {
+        if (clickMode === 'brush') return;
+        const coords = getCanvasCoords(clientX, clientY);
+        if (!coords) return;
 
         const origW = srcImageData.width;
         const origH = srcImageData.height;
-        if (origX >= 0 && origX < origW && origY >= 0 && origY < origH) {
-          const i = (origY * origW + origX) * 4;
+
+        if (coords.x >= 0 && coords.x < origW && coords.y >= 0 && coords.y < origH) {
+          const i = (coords.y * origW + coords.x) * 4;
           const d = srcImageData.data;
           const r = d[i], g = d[i + 1], b = d[i + 2];
-          clearAI();
-          if (clickMode === 'seed') {
-            addTarget({ type: 'seed', r, g, b, nx: origX / (origW - 1 || 1), ny: origY / (origH - 1 || 1) });
-          } else {
-            addTarget({ type: 'color', r, g, b });
-          }
+
+          const hex = '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+
+          const tooltip = document.getElementById('pickerTooltip');
+          document.getElementById('pickerTooltipColor').style.backgroundColor = hex;
+          document.getElementById('pickerTooltipHex').textContent = hex.toUpperCase();
+          document.getElementById('pickerTooltipPos').textContent = `X: ${coords.x}, Y: ${coords.y}`;
+
+          tooltip.style.display = 'flex';
+          updateTooltipPosition(clientX, clientY);
+        } else {
+          document.getElementById('pickerTooltip').style.display = 'none';
         }
+      }
+
+      dstC.addEventListener('pointerdown', (e) => {
+        if (clickMode === 'brush') return;
+        isPointerDown = true;
+        if (e.pointerType === 'touch') {
+          dstC.releasePointerCapture(e.pointerId);
+        }
+        handleCanvasMove(e.clientX, e.clientY);
+      });
+
+      dstC.addEventListener('pointermove', (e) => {
+        if (clickMode === 'brush') return;
+        if (e.pointerType === 'mouse' || isPointerDown) {
+          handleCanvasMove(e.clientX, e.clientY);
+        }
+      });
+
+      dstC.addEventListener('pointerup', (e) => {
+        if (clickMode === 'brush') return;
+        if (e.pointerType === 'mouse' || isPointerDown) {
+          isPointerDown = false;
+          const coords = getCanvasCoords(e.clientX, e.clientY);
+          if (coords) {
+            const origW = srcImageData.width;
+            const origH = srcImageData.height;
+            if (coords.x >= 0 && coords.x < origW && coords.y >= 0 && coords.y < origH) {
+              const i = (coords.y * origW + coords.x) * 4;
+              const d = srcImageData.data;
+              const r = d[i], g = d[i + 1], b = d[i + 2];
+              clearAI();
+              if (clickMode === 'seed') {
+                addTarget({ type: 'seed', r, g, b, nx: coords.x / (origW - 1 || 1), ny: coords.y / (origH - 1 || 1) });
+              } else {
+                addTarget({ type: 'color', r, g, b });
+              }
+            }
+          }
+          document.getElementById('pickerTooltip').style.display = 'none';
+        }
+      });
+
+      dstC.addEventListener('pointerleave', () => {
+        isPointerDown = false;
+        document.getElementById('pickerTooltip').style.display = 'none';
       });
 
       // Swatches removed
@@ -2279,6 +2443,7 @@
               const p = stack.pop();
               if (visited[p]) continue;
               visited[p] = 1;
+              if (brushMask && brushMask[p] === 1) continue; // Keep/Protect acts as barrier
               const cov = coverageAt(src, p * 4, t);
               if (cov >= hi) continue;                  // subject: don't claim, don't propagate
               if (owner[p] === -1) owner[p] = si;        // claim rim / background pixel
@@ -2319,6 +2484,7 @@
               const p = stack.pop();
               if (reach[p]) continue;
               reach[p] = 1;
+              if (brushMask && brushMask[p] === 1) continue; // Keep/Protect acts as barrier
               if (owner[p] !== -1 || tmp[p] === -1) continue;   // already claimed, or subject -> stop
               owner[p] = tmp[p];                                 // claim rim / background
               if (covG[p] < floodTol) {                          // propagate only through true bg
@@ -2508,23 +2674,97 @@
         });
       });
 
+      // Initialize touch offset checkbox default
+      const brushOffsetEl = document.getElementById('brushOffset');
+      brushOffsetEl.checked = window.matchMedia("(pointer: coarse)").matches;
+
+      let lastPointerClientX = undefined;
+      let lastPointerClientY = undefined;
+      let isPointerOverWorkspace = false;
+      let brushSizePreviewTimeout = null;
+
+      function showBrushSizePreview() {
+        brushCursor.style.display = 'block';
+        brushCursor.classList.add('previewing');
+
+        let px = lastPointerClientX;
+        let py = lastPointerClientY;
+        if (px === undefined || py === undefined) {
+          const rect = drawC.getBoundingClientRect();
+          px = rect.left + rect.width / 2;
+          py = rect.top + rect.height / 2;
+        }
+
+        updateBrushCursor(px, py);
+
+        if (brushSizePreviewTimeout) clearTimeout(brushSizePreviewTimeout);
+        brushSizePreviewTimeout = setTimeout(() => {
+          brushCursor.classList.remove('previewing');
+          if (!isDrawing && !isPointerOverWorkspace) {
+            brushCursor.style.display = 'none';
+          }
+        }, 1000);
+      }
+
       brushSizeSlider.addEventListener('input', () => {
         const pct = (brushSizeSlider.value - brushSizeSlider.min) / (brushSizeSlider.max - brushSizeSlider.min) * 100;
         brushSizeSlider.style.setProperty('--fill', pct + '%');
-        updateBrushCursor();
+        showBrushSizePreview();
       });
 
       let scaleRatio = 1;
 
-      function updateBrushCursor(x, y) {
+      function updateBrushCursor(clientX, clientY) {
         if (!scaleRatio) return;
         const radius = parseInt(brushSizeSlider.value) * scaleRatio;
         brushCursor.style.width = brushCursor.style.height = `${radius * 2}px`;
-        if (x !== undefined && y !== undefined) {
-          brushCursor.style.left = `${x}px`;
-          brushCursor.style.top = `${y}px`;
+        if (clientX !== undefined && clientY !== undefined) {
+          brushCursor.style.left = `${clientX}px`;
+          brushCursor.style.top = `${clientY}px`;
         }
       }
+
+      // Undo/Redo logic
+      const maxHistory = 15;
+      let historyUndo = [];
+      let historyRedo = [];
+
+      function updateUndoRedoButtons() {
+        document.getElementById('brushUndo').disabled = historyUndo.length <= 1;
+        document.getElementById('brushRedo').disabled = historyRedo.length === 0;
+      }
+
+      function saveHistoryState() {
+        const cw = drawC.width, ch = drawC.height;
+        const dData = dCtx.getImageData(0, 0, cw, ch);
+        const mData = mCtx.getImageData(0, 0, cw, ch);
+        historyUndo.push({ dData, mData });
+        if (historyUndo.length > maxHistory) historyUndo.shift();
+        historyRedo = [];
+        updateUndoRedoButtons();
+      }
+
+      function performUndo() {
+        if (historyUndo.length <= 1) return;
+        const current = historyUndo.pop();
+        historyRedo.push(current);
+        const prev = historyUndo[historyUndo.length - 1];
+        dCtx.putImageData(prev.dData, 0, 0);
+        mCtx.putImageData(prev.mData, 0, 0);
+        updateUndoRedoButtons();
+      }
+
+      function performRedo() {
+        if (historyRedo.length === 0) return;
+        const next = historyRedo.pop();
+        historyUndo.push(next);
+        dCtx.putImageData(next.dData, 0, 0);
+        mCtx.putImageData(next.mData, 0, 0);
+        updateUndoRedoButtons();
+      }
+
+      document.getElementById('brushUndo').addEventListener('click', performUndo);
+      document.getElementById('brushRedo').addEventListener('click', performRedo);
 
       document.getElementById('openBrushEditor').addEventListener('click', () => {
         if (!srcImageData) return;
@@ -2553,6 +2793,11 @@
 
         dCtx.drawImage(bmC, 0, 0, cw, ch);
 
+        // Initialize history
+        historyUndo = [];
+        historyRedo = [];
+        saveHistoryState();
+
         updateBrushCursor();
         brushCursor.style.display = 'none';
       });
@@ -2564,6 +2809,7 @@
       document.getElementById('brushClear').addEventListener('click', () => {
         dCtx.clearRect(0, 0, drawC.width, drawC.height);
         mCtx.clearRect(0, 0, bmC.width, bmC.height);
+        saveHistoryState();
       });
 
       document.getElementById('brushApply').addEventListener('click', () => {
@@ -2590,8 +2836,14 @@
 
       function getDrawPos(e) {
         const rect = drawC.getBoundingClientRect();
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const isTouch = e.touches ? true : (e.pointerType === 'touch');
+        let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        if (isTouch && brushOffsetEl.checked) {
+          clientY -= 60; // offset upwards
+        }
+
         return {
           x: clientX - rect.left,
           y: clientY - rect.top,
@@ -2603,6 +2855,8 @@
         isDrawing = true;
         const p = getDrawPos(e);
         lastDrawP = p;
+        lastPointerClientX = p.clientX;
+        lastPointerClientY = p.clientY;
         brushCursor.style.display = 'block';
         updateBrushCursor(p.clientX, p.clientY);
         doDraw(p);
@@ -2640,12 +2894,14 @@
       }
 
       function moveDraw(e) {
+        const p = getDrawPos(e);
+        lastPointerClientX = p.clientX;
+        lastPointerClientY = p.clientY;
+
         if (!isDrawing && !e.touches) {
-          const p = getDrawPos(e);
           updateBrushCursor(p.clientX, p.clientY);
         }
         if (isDrawing) {
-          const p = getDrawPos(e);
           updateBrushCursor(p.clientX, p.clientY);
           doDraw(p);
           if (e.cancelable) e.preventDefault();
@@ -2653,16 +2909,26 @@
       }
 
       function endDraw() {
-        isDrawing = false;
-        lastDrawP = null;
+        if (isDrawing) {
+          isDrawing = false;
+          lastDrawP = null;
+          saveHistoryState();
+        }
       }
 
       brushWorkspace.addEventListener('pointerdown', startDraw);
       brushWorkspace.addEventListener('pointermove', moveDraw);
       window.addEventListener('pointerup', endDraw);
-      brushWorkspace.addEventListener('pointerleave', () => brushCursor.style.display = 'none');
+
       brushWorkspace.addEventListener('pointerenter', (e) => {
+        isPointerOverWorkspace = true;
         if (e.pointerType === 'mouse') brushCursor.style.display = 'block';
+      });
+      brushWorkspace.addEventListener('pointerleave', () => {
+        isPointerOverWorkspace = false;
+        if (!brushCursor.classList.contains('previewing')) {
+          brushCursor.style.display = 'none';
+        }
       });
 
       brushWorkspace.addEventListener('touchstart', (e) => { if (e.target === drawC && e.cancelable) e.preventDefault(); }, { passive: false });

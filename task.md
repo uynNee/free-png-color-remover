@@ -16,10 +16,26 @@
 - `[x]` Mobile: Hide `.hint` inside the workspace card.
 - `[x]` Mobile: Remove previous sticky/glassmorphism overrides from the controls card.
 
+## Hotfix: Protect Mask as Boundary Barrier
+**Status:** Done.
+
+**What was done:**
+- `[x]` Updated Wand tool flood fill to treat Protect/Keep pixels (`brushMask[p] === 1`) as an authoritative boundary, preventing propagation.
+- `[x]` Updated Edge-only mode flood fill to similarly respect Protect pixels as hard barriers.
+- `[x]` This ensures users can draw a Protect mask over lineart gaps to successfully block edge-only background removal from leaking inside.
+
 ---
 
 ## 2. Exclude Specific Pixels — Pen/Brush Tool
 **Problem:** No way to protect specific pixels from removal or manually erase specific areas. Not implemented.
+
+**Status:** Done.
+
+**What was done:**
+- `[x]` Added Brush Editor modal with Toggle buttons: Mask Edit Mode (Keep / Erase)
+- `[x]` Implemented BrushDrawing and Mask-Drawing Logic on a per-pixel basis on the Preview Layer
+- `[x]` Made sure that any Mask draws are persisted correctly during Undo/Redo cycles and on Canvas Resize
+- `[x]` Updated the Final MattingLogic to correctly interpret the new Mask Data and apply the required alpha values, effectively keeping the masked areas or erasing them respectively.
 
 **Goal:** Brush/pen tool with adjustable size that either:
 - **Protects** pixels (marks them as keep — excluded from removal), or
