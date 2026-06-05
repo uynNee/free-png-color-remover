@@ -588,33 +588,7 @@
       transform: scale(1.05);
     }
 
-    /* Color Picker UI */
-    .color-picker-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      padding: 24px;
-      background: var(--color-neutral-50);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-card-inner);
-      width: 100%;
-    }
 
-    #color-wheel {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-    }
-
-    .btn-icon {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
 
     input[type=number] {
       width: 72px;
@@ -703,6 +677,179 @@
       align-items: center;
       gap: 12px;
       position: relative;
+    }
+
+    /* ---- Brush Mask Editor Overlay ---- */
+    .brush-editor-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--color-neutral-900);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);
+      color: var(--color-white);
+    }
+
+    .brush-editor-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .brush-editor-topbar {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid var(--color-neutral-800);
+      background: rgba(27, 27, 29, 0.8);
+      backdrop-filter: blur(12px);
+    }
+
+    .brush-editor-workspace {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--checkerboard-dark);
+      background-image:
+        linear-gradient(45deg, var(--checkerboard-light) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--checkerboard-light) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--checkerboard-light) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--checkerboard-light) 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, 12px 0;
+      touch-action: none;
+    }
+
+    .brush-editor-workspace canvas {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    #editorDrawCanvas {
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .brush-editor-bottombar {
+      padding: 16px 24px;
+      border-top: 1px solid var(--color-neutral-800);
+      background: rgba(27, 27, 29, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      backdrop-filter: blur(12px);
+    }
+
+    @media (min-width: 768px) {
+      .brush-editor-bottombar {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+
+    .brush-editor-controls {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .brush-seg {
+      display: inline-flex;
+      background: var(--color-neutral-800);
+      border-radius: var(--radius-md);
+      padding: 4px;
+    }
+
+    .brush-segbtn {
+      background: transparent;
+      color: var(--color-neutral-400);
+      border: none;
+      padding: 8px 16px;
+      border-radius: calc(var(--radius-md) - 4px);
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    .brush-segbtn.active {
+      background: var(--color-neutral-600);
+      color: var(--color-white);
+    }
+
+    .brush-segbtn[data-bmode="erase"].active {
+      background: rgba(239, 68, 68, 0.2);
+      color: #FCA5A5;
+    }
+
+    .brush-segbtn[data-bmode="keep"].active {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6EE7B7;
+    }
+
+    .brush-size-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--color-neutral-300);
+      font-weight: 600;
+    }
+
+    .brush-size-control input[type=range] {
+      width: 120px;
+      background: linear-gradient(to right, var(--color-neutral-400) 0%, var(--color-neutral-400) var(--fill, 0%), var(--color-neutral-800) var(--fill, 0%), var(--color-neutral-800) 100%);
+    }
+
+    .brush-size-control input[type=range]::-webkit-slider-thumb {
+      border-color: var(--color-neutral-400);
+      width: 20px;
+      height: 20px;
+    }
+
+    .brush-editor-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .brush-editor-cursor {
+      position: absolute;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      display: none;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+    }
+
+    .brush-panel {
+      display: none;
+      background: var(--color-info-bg);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .brush-panel.active {
+      display: block;
     }
 
     /* Custom Toggles */
@@ -1521,6 +1668,7 @@
 
     <div class="panels" id="panels" style="display:none">
       <canvas id="src" style="display: none;"></canvas>
+      <canvas id="brushMaskCanvas" style="display: none;"></canvas>
       <div class="card">
         <div class="workspace-sticky-wrapper">
           <div class="card-header"
@@ -1543,15 +1691,21 @@
           <div class="row">
             <small id="modehint">click image → removes that color globally</small>
           </div>
-          <div class="color-picker-wrap">
-            <div id="color-wheel"></div>
-            <button id="addColor" type="button" class="sec btn-icon">+ Add Target Color</button>
+
+
+          <div class="brush-panel" id="brush-panel">
+            <h3 style="margin: 0 0 12px; font-size: 16px; color: var(--ink);">Brush Mask Editor</h3>
+            <p style="margin: 0 0 16px; font-size: 14px; color: var(--ink-light);">Draw a mask to manually protect or
+              erase areas.</p>
+            <button id="openBrushEditor" type="button" class="sec" style="width: 100%;">Open Full-Screen Editor</button>
           </div>
+
           <div class="chips" id="chips"></div>
           <div class="row">
             <span class="seg">
               <button type="button" class="segbtn active" data-mode="color">🎨 Color</button>
               <button type="button" class="segbtn" data-mode="seed">🪄 Wand</button>
+              <button type="button" class="segbtn" data-mode="brush">🖌️ Brush</button>
             </span>
           </div>
 
@@ -1652,6 +1806,38 @@
       <p>100% private. All processing is done locally in your browser. Images are never uploaded.</p>
     </footer>
 
+    <!-- Brush Editor Modal -->
+    <div id="brushEditor" class="brush-editor-overlay">
+      <div class="brush-editor-topbar">
+        <div style="font-weight: 700;">Brush Editor</div>
+        <button id="brushCancel" type="button" class="sec"
+          style="padding: 8px 16px; font-size: 14px; color: var(--color-white); border-color: var(--color-neutral-600); background: transparent;">Cancel</button>
+      </div>
+      <div class="brush-editor-workspace" id="brushWorkspace">
+        <canvas id="editorBaseCanvas"></canvas>
+        <canvas id="editorDrawCanvas"></canvas>
+        <div class="brush-editor-cursor" id="brushCursor"></div>
+      </div>
+      <div class="brush-editor-bottombar">
+        <div class="brush-editor-controls">
+          <div class="brush-seg">
+            <button type="button" class="brush-segbtn active" data-bmode="erase">Erase (-)</button>
+            <button type="button" class="brush-segbtn" data-bmode="keep">Protect (+)</button>
+          </div>
+          <div class="brush-size-control">
+            <span>Size</span>
+            <input id="brushSize" type="range" min="1" max="100" value="30" style="--fill: 30%;">
+          </div>
+          <button id="brushClear" type="button" class="sec"
+            style="padding: 8px 16px; font-size: 14px; background: transparent; color: var(--color-neutral-300); border-color: var(--color-neutral-600);">Clear
+            Mask</button>
+        </div>
+        <div class="brush-editor-actions">
+          <button id="brushApply" type="button" style="padding: 10px 24px;">Apply Mask</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Centered Modal Background Color Picker -->
     <div id="bgPickerModal" class="modal-overlay">
       <div class="modal-content">
@@ -1674,19 +1860,10 @@
       const softN = document.getElementById('softN');
       const dl = document.getElementById('dl');
       const reset = document.getElementById('reset');
-      const addColorBtn = document.getElementById('addColor');
+
       const chipsEl = document.getElementById('chips');
 
-      const colorPicker = new iro.ColorPicker("#color-wheel", {
-        width: 220,
-        color: "#ffffff",
-        borderWidth: 2,
-        borderColor: "var(--border)",
-        layout: [
-          { component: iro.ui.Wheel },
-          { component: iro.ui.Slider, options: { sliderType: 'value' } }
-        ]
-      });
+
       const modehint = document.getElementById('modehint');
       const autocrop = document.getElementById('autocrop');
       const cropinfo = document.getElementById('cropinfo');
@@ -1788,6 +1965,7 @@
       let srcImageData = null;
       let originalImg = null;
       let baseW = 0, baseH = 0;
+      let brushMask = null;
 
       // Removal targets: {type:'color'|'seed', r,g,b, nx,ny}. nx,ny normalized 0..1 for seeds.
       // Starts EMPTY — nothing is removed until the user picks a color or wand-clicks.
@@ -1885,6 +2063,13 @@
             const sctx = srcC.getContext('2d');
             sctx.drawImage(img, 0, 0, w, h);
             srcImageData = sctx.getImageData(0, 0, w, h);
+
+            const bmCanvas = document.getElementById('brushMaskCanvas');
+            bmCanvas.width = w; bmCanvas.height = h;
+            bmCanvas.getContext('2d').clearRect(0, 0, w, h);
+            brushMask = new Uint8Array(w * h);
+            window.hasBrushMask = false;
+
             panels.style.display = 'grid';
             render();
           };
@@ -1913,7 +2098,6 @@
           const i = (origY * origW + origX) * 4;
           const d = srcImageData.data;
           const r = d[i], g = d[i + 1], b = d[i + 2];
-          colorPicker.color.rgb = { r, g, b };
           clearAI();
           if (clickMode === 'seed') {
             addTarget({ type: 'seed', r, g, b, nx: origX / (origW - 1 || 1), ny: origY / (origH - 1 || 1) });
@@ -2063,7 +2247,7 @@
         const n = w * h;
         const out = new ImageData(w, h);
         const o = out.data;
-        if (!targets.length) { o.set(src); return out; }
+        if (!targets.length && !window.hasBrushMask) { o.set(src); return out; }
 
         const simV = +sim.value / 100;          // coverage floor: below this = fully removed
         const softV = softPct / 100;            // extra feathering of the transition
@@ -2155,16 +2339,29 @@
         for (let p = 0; p < n; p++) {
           const ow = owner[p];
           const sa = src[p * 4 + 3] / 255;
-          if (ow === -1) { alpha[p] = sa; continue; }       // untouched subject
-          const c = coverageAt(src, p * 4, targets[ow]);
-          alpha[p] = c >= hi ? sa : c <= lo ? 0 : sa * (c - lo) / span;
+
+          let aVal = sa;
+          if (ow !== -1) {
+            const c = coverageAt(src, p * 4, targets[ow]);
+            aVal = c >= hi ? sa : c <= lo ? 0 : sa * (c - lo) / span;
+          }
+
+          if (brushMask && brushMask[p] === 1) aVal = sa; // Keep
+          if (brushMask && brushMask[p] === 2) aVal = 0;  // Erase
+
+          alpha[p] = aVal;
         }
 
         // 4) Decontaminate foreground colour via Blur-Fusion (removes edge halos), then write.
         const F = blurFusion(src, alpha, w, h, radiusFor(w, h, fullRes), passes);
         for (let p = 0; p < n; p++) {
           const i = p * 4;
-          if (owner[p] === -1) { o[i] = src[i]; o[i + 1] = src[i + 1]; o[i + 2] = src[i + 2]; o[i + 3] = src[i + 3]; continue; }
+
+          if (owner[p] === -1 && (!brushMask || brushMask[p] === 0)) {
+            o[i] = src[i]; o[i + 1] = src[i + 1]; o[i + 2] = src[i + 2]; o[i + 3] = src[i + 3];
+            continue;
+          }
+
           o[i] = F[p * 3] | 0; o[i + 1] = F[p * 3 + 1] | 0; o[i + 2] = F[p * 3 + 2] | 0;
           o[i + 3] = Math.round(alpha[p] * 255);
         }
@@ -2265,22 +2462,212 @@
       document.getElementById('simPlus').addEventListener('click', () => adjustStepper(sim, simN, 1));
       document.getElementById('softMinus').addEventListener('click', () => adjustStepper(soft, softN, -1));
       document.getElementById('softPlus').addEventListener('click', () => adjustStepper(soft, softN, 1));
-      // Color Picker Add Target
-      addColorBtn.addEventListener('click', () => {
-        const { r, g, b } = colorPicker.color.rgb;
-        clearAI();
-        addTarget({ type: 'color', r, g, b });
-      });
       // click-mode segmented control
-      document.querySelectorAll('.segbtn').forEach(btn => {
+      document.querySelectorAll('.segbtn[data-mode]').forEach(btn => {
         btn.addEventListener('click', () => {
           clickMode = btn.dataset.mode;
-          document.querySelectorAll('.segbtn').forEach(b => b.classList.toggle('active', b === btn));
-          modehint.textContent = clickMode === 'seed'
-            ? 'click a region to erase just that blob (keeps same color elsewhere)'
-            : 'click image → removes that color globally';
+          document.querySelectorAll('.segbtn[data-mode]').forEach(b => b.classList.toggle('active', b === btn));
+
+          const brushPanel = document.getElementById('brush-panel');
+          const chips = document.getElementById('chips');
+
+          if (clickMode === 'brush') {
+            chips.style.display = 'none';
+            brushPanel.classList.add('active');
+            modehint.textContent = 'brush mode active: manually paint over areas';
+          } else {
+            chips.style.display = 'flex';
+            brushPanel.classList.remove('active');
+            modehint.textContent = clickMode === 'seed'
+              ? 'click a region to erase just that blob (keeps same color elsewhere)'
+              : 'click image → removes that color globally';
+          }
         });
       });
+
+      // Brush Editor Logic
+      const brushEditor = document.getElementById('brushEditor');
+      const brushWorkspace = document.getElementById('brushWorkspace');
+      const baseC = document.getElementById('editorBaseCanvas');
+      const drawC = document.getElementById('editorDrawCanvas');
+      const bmC = document.getElementById('brushMaskCanvas');
+      const brushCursor = document.getElementById('brushCursor');
+      const bCtx = baseC.getContext('2d');
+      const dCtx = drawC.getContext('2d');
+      const mCtx = bmC.getContext('2d');
+
+      let isDrawing = false;
+      let lastDrawP = null;
+      let currentBMode = 'erase';
+      const brushSizeSlider = document.getElementById('brushSize');
+
+      document.querySelectorAll('.brush-segbtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentBMode = btn.dataset.bmode;
+          document.querySelectorAll('.brush-segbtn').forEach(b => b.classList.toggle('active', b === btn));
+        });
+      });
+
+      brushSizeSlider.addEventListener('input', () => {
+        const pct = (brushSizeSlider.value - brushSizeSlider.min) / (brushSizeSlider.max - brushSizeSlider.min) * 100;
+        brushSizeSlider.style.setProperty('--fill', pct + '%');
+        updateBrushCursor();
+      });
+
+      let scaleRatio = 1;
+
+      function updateBrushCursor(x, y) {
+        if (!scaleRatio) return;
+        const radius = parseInt(brushSizeSlider.value) * scaleRatio;
+        brushCursor.style.width = brushCursor.style.height = `${radius * 2}px`;
+        if (x !== undefined && y !== undefined) {
+          brushCursor.style.left = `${x}px`;
+          brushCursor.style.top = `${y}px`;
+        }
+      }
+
+      document.getElementById('openBrushEditor').addEventListener('click', () => {
+        if (!srcImageData) return;
+        brushEditor.classList.add('active');
+
+        const W = srcImageData.width;
+        const H = srcImageData.height;
+        const ww = brushWorkspace.clientWidth - 40;
+        const wh = brushWorkspace.clientHeight - 40;
+
+        scaleRatio = Math.min(ww / W, wh / H);
+        const cw = Math.round(W * scaleRatio);
+        const ch = Math.round(H * scaleRatio);
+
+        baseC.width = drawC.width = cw;
+        baseC.height = drawC.height = ch;
+
+        bCtx.clearRect(0, 0, cw, ch);
+        bCtx.drawImage(srcC, 0, 0, cw, ch);
+
+        dCtx.clearRect(0, 0, cw, ch);
+        dCtx.lineCap = 'round';
+        dCtx.lineJoin = 'round';
+        mCtx.lineCap = 'round';
+        mCtx.lineJoin = 'round';
+
+        dCtx.drawImage(bmC, 0, 0, cw, ch);
+
+        updateBrushCursor();
+        brushCursor.style.display = 'none';
+      });
+
+      document.getElementById('brushCancel').addEventListener('click', () => {
+        brushEditor.classList.remove('active');
+      });
+
+      document.getElementById('brushClear').addEventListener('click', () => {
+        dCtx.clearRect(0, 0, drawC.width, drawC.height);
+        mCtx.clearRect(0, 0, bmC.width, bmC.height);
+      });
+
+      document.getElementById('brushApply').addEventListener('click', () => {
+        const W = bmC.width;
+        const H = bmC.height;
+        const maskData = mCtx.getImageData(0, 0, W, H).data;
+        let hasMask = false;
+        for (let i = 0; i < W * H; i++) {
+          const r = maskData[i * 4];
+          const g = maskData[i * 4 + 1];
+          const a = maskData[i * 4 + 3];
+          if (a > 50) {
+            if (r > 150) { brushMask[i] = 2; hasMask = true; }
+            else if (g > 150) { brushMask[i] = 1; hasMask = true; }
+          } else {
+            brushMask[i] = 0;
+          }
+        }
+        window.hasBrushMask = hasMask;
+        brushEditor.classList.remove('active');
+        clearAI();
+        render();
+      });
+
+      function getDrawPos(e) {
+        const rect = drawC.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top,
+          clientX, clientY
+        };
+      }
+
+      function startDraw(e) {
+        isDrawing = true;
+        const p = getDrawPos(e);
+        lastDrawP = p;
+        brushCursor.style.display = 'block';
+        updateBrushCursor(p.clientX, p.clientY);
+        doDraw(p);
+      }
+
+      function doDraw(p) {
+        if (!isDrawing) return;
+        const size = parseInt(brushSizeSlider.value);
+        const rSize = size * scaleRatio;
+
+        dCtx.lineWidth = rSize * 2;
+        dCtx.strokeStyle = currentBMode === 'erase' ? 'rgba(239, 68, 68, 0.6)' : 'rgba(16, 185, 129, 0.6)';
+
+        dCtx.beginPath();
+        if (lastDrawP) dCtx.moveTo(lastDrawP.x, lastDrawP.y);
+        else dCtx.moveTo(p.x, p.y);
+        dCtx.lineTo(p.x, p.y);
+        dCtx.stroke();
+
+        mCtx.lineWidth = size * 2;
+        mCtx.strokeStyle = currentBMode === 'erase' ? 'rgba(255, 0, 0, 1)' : 'rgba(0, 255, 0, 1)';
+        mCtx.globalCompositeOperation = 'source-over';
+
+        const lx = p.x / scaleRatio;
+        const ly = p.y / scaleRatio;
+        const llx = lastDrawP ? lastDrawP.x / scaleRatio : lx;
+        const lly = lastDrawP ? lastDrawP.y / scaleRatio : ly;
+
+        mCtx.beginPath();
+        mCtx.moveTo(llx, lly);
+        mCtx.lineTo(lx, ly);
+        mCtx.stroke();
+
+        lastDrawP = p;
+      }
+
+      function moveDraw(e) {
+        if (!isDrawing && !e.touches) {
+          const p = getDrawPos(e);
+          updateBrushCursor(p.clientX, p.clientY);
+        }
+        if (isDrawing) {
+          const p = getDrawPos(e);
+          updateBrushCursor(p.clientX, p.clientY);
+          doDraw(p);
+          if (e.cancelable) e.preventDefault();
+        }
+      }
+
+      function endDraw() {
+        isDrawing = false;
+        lastDrawP = null;
+      }
+
+      brushWorkspace.addEventListener('pointerdown', startDraw);
+      brushWorkspace.addEventListener('pointermove', moveDraw);
+      window.addEventListener('pointerup', endDraw);
+      brushWorkspace.addEventListener('pointerleave', () => brushCursor.style.display = 'none');
+      brushWorkspace.addEventListener('pointerenter', (e) => {
+        if (e.pointerType === 'mouse') brushCursor.style.display = 'block';
+      });
+
+      brushWorkspace.addEventListener('touchstart', (e) => { if (e.target === drawC && e.cancelable) e.preventDefault(); }, { passive: false });
+      brushWorkspace.addEventListener('touchmove', (e) => { if (e.target === drawC && e.cancelable) e.preventDefault(); }, { passive: false });
+
       autocrop.addEventListener('change', render);
       edgeonly.addEventListener('change', () => { clearAI(); render(); });
 
@@ -2321,7 +2708,6 @@
       reset.addEventListener('click', () => {
         sim.value = simN.value = 10;
         soft.value = softN.value = 25;
-        colorPicker.color.hexString = '#ffffff';
         edgeonly.checked = false;
         targets = [];
         renderChips();
