@@ -32,7 +32,8 @@
   <meta name="application-name" content="Free PNG Color Remover">
   <meta property="og:locale" content="en_US">
   <meta property="og:site_name" content="Free PNG Color Remover">
-  <meta name="license" content="CC BY-NC 4.0 (Creative Commons Attribution-NonCommercial 4.0 International Public License)">
+  <meta name="license"
+    content="CC BY-NC 4.0 (Creative Commons Attribution-NonCommercial 4.0 International Public License)">
   <link rel="license" href="LICENSE">
   <script type="application/ld+json">
 {
@@ -121,7 +122,7 @@
           "name": "How do I remove a white background from a PNG?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Upload your PNG, click the white area in the image preview to sample the color, then adjust the Similarity slider until all shades of white are removed. Use the Softness slider for cleaner edges. Click Download PNG to save the result."
+            "text": "Upload your PNG click the white area in the image preview to sample the color, then adjust the Similarity slider until all shades of white are removed. Use the Softness slider for cleaner edges. Click Download PNG to save the result."
           }
         },
         {
@@ -1187,15 +1188,12 @@
   <div class="wrap">
     <header class="hero">
       <div class="hero-inner">
-        <span class="badge"><span class="dot"></span> Free forever &middot; Nothing leaves your device &middot; No
-          sign-up</span>
-        <h1>Remove Any Color.<br>Stay Private. Stay Free.</h1>
-        <p class="sub">Drop any PNG or JPG. Click a color. Watch it vanish. Your images never leave your browser — no
-          server, no cloud, no subscription.</p>
+        <h1>Free PNG Color Remover</h1>
+        <p class="sub">Instantly erase backgrounds or specific colors. 100% private, offline, and free.</p>
 
         <div id="drop" class="drop">
           <span class="ic">🖼️</span>
-          <b>Drop your image here</b>, click to browse, or paste (Ctrl+V)
+          <b>Drop your image here</b> click to browse, or paste (Ctrl+V)
           <input id="file" type="file" accept="image/*" hidden>
         </div>
       </div>
@@ -1273,285 +1271,40 @@
       </div>
     </div>
 
-    <section class="creator-card reveal">
-      <div class="creator-avatar">
-        <span class="avatar-placeholder">✨</span>
-      </div>
-      <div class="creator-info">
-        <span class="creator-tag">Designed & Built By</span>
-        <h3>uynNee (Uyển Nhi)</h3>
-        <p class="creator-bio">
-          UX/UI Designer. I built this because every background remover I tried was either paywalled, slow, or uploaded
-          your images somewhere sketchy. This one runs entirely on your machine &mdash; no servers, no nonsense, just
-          clean edges.
-        </p>
-        <div class="creator-links">
-          <a href="https://github.com/uynNee" target="_blank" class="cr-link gh">
-            <svg class="icon" viewBox="0 0 24 24" width="16" height="16">
-              <path fill="currentColor"
-                d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z" />
-            </svg>
-            GitHub
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <div class="content">
-      <section class="reveal cta-box">
-        <h2>Run it locally — right on your computer</h2>
-        <p>This whole tool is a <strong>single HTML file</strong>. No build step, no server, no dependencies, no network
-          — it runs <strong>100% offline</strong>. This site runs on a free hosting plan, so if it's ever slow or down,
-          just run your own copy.</p>
-        <p><a class='dl-btn' download='png-color-remover.html' href='/' id='selfhost'>⬇ Download the tool (.html
-            file)</a>
-        </p>
-        <p><strong>Three steps to run offline:</strong></p>
-        <ol>
-          <li>Click the button above to download the file.</li>
-          <li>Double-click it — opens in your browser. Done.</li>
-          <li>Disconnect from the internet. It still works perfectly.</li>
+    <div class="content reveal" style="max-width: 800px; margin: 40px auto; padding: 24px;">
+      <section class="quick-tips">
+        <h2>How to use:</h2>
+        <ol style="margin-left: 20px; line-height: 1.6; margin-top: 12px;">
+          <li>Drop, paste, or select your image.</li>
+          <li>Click the color you want to remove in the left panel.</li>
+          <li>Adjust <strong>Similarity</strong> and <strong>Softness</strong> to perfect the cutout.</li>
+          <li>Click <strong>Save Transparent PNG</strong>.</li>
         </ol>
       </section>
 
-      <section class="reveal">
-        <h2>One tool. Every workflow.</h2>
-
-        <h3>For Web Designers & Developers</h3>
-        <ul>
-          <li><strong>Halo-free edges:</strong> Advanced edge-softening removes colored halos, ensuring
-            transparent PNGs blend cleanly over any CSS background.</li>
-          <li><strong>Auto-crop built in:</strong> Automatically trims excess transparent pixels, reducing file
-            dimensions
-            and improving page load speeds.</li>
-          <li><strong>Client-side, always:</strong> Processes entirely client-side via the HTML5 Canvas API. Client
-            assets
-            and pre-release product images never leave your local machine.</li>
+      <section class="features-minimal" style="margin-top: 32px;">
+        <h2>Options & Tips:</h2>
+        <ul style="margin-left: 20px; line-height: 1.6; margin-top: 12px;">
+          <li><strong>🎨 Color Mode</strong> removes the clicked color globally from the entire image.</li>
+          <li><strong>🪄 Wand Mode</strong> erases only the contiguous blob of color you clicked.</li>
+          <li><strong>Edge-only mode</strong> prevents the removal of matching colors inside the subject (e.g. keeps a
+            white shirt while removing a white background).</li>
+          <li>Increase <strong>Softness</strong> if you see colored halos or fringing around fine details like hair or
+            fur.</li>
         </ul>
-
-        <h3>For Meme Creators & Social Media Managers</h3>
-        <ul>
-          <li><strong>Instant subject isolation:</strong> Isolate subjects instantly for YouTube thumbnails, TikTok
-            stickers, or
-            meme templates.</li>
-          <li><strong>Chroma Key & Green Screen:</strong> Select bright green or blue backgrounds and adjust the
-            similarity slider to extract subjects flawlessly.</li>
-          <li><strong>Smart Wand tool:</strong> Delete specific, isolated background regions without affecting matching
-            colors inside the subject (e.g., keeping a white shirt while deleting a white background).</li>
-        </ul>
-
-        <h3>For E-commerce & Casual Users</h3>
-        <ul>
-          <li><strong>Product photo prep:</strong> Remove white or gray studio backgrounds from product shots with a
-            single click, preparing them for Amazon, eBay, or Shopify.</li>
-          <li><strong>Genuinely unlimited:</strong> Unlimited full-resolution downloads. No mandatory account
-            creation or premium tier restrictions.</li>
-        </ul>
-      </section>
-
-      <section class="reveal">
-        <h2>Controls that actually make sense</h2>
-        <ul>
-          <li><strong>Color Picker & Multi-Color Selection:</strong> Sample any pixel on the image to set a target
-            color. Add multiple targets to remove complex, multi-toned backgrounds simultaneously.</li>
-          <li><strong>Similarity slider:</strong> Controls the tolerance for color matching. Increase the
-            value to remove gradients or shadows; decrease it for strict, single-hex-code precision.</li>
-          <li><strong>Softness & Spill Removal:</strong> Analyzes semi-transparent border pixels to separate the
-            foreground subject from background bleed. Crucial for hair, fur, or soft-focus edges.</li>
-          <li><strong>Edge-only mode:</strong> Restricts the removal algorithm to pixels touching the outside
-            border of the image, protecting internal subject colors.</li>
-        </ul>
-      </section>
-
-      <section class="reveal">
-        <h2>How to remove a background color — step by step</h2>
-        <ol>
-          <li>Drop or choose a PNG/JPG image.</li>
-          <li>Click the color in the preview, or pick it with the color box.</li>
-          <li>Adjust <strong>Similarity</strong> to control how close a color must be to get removed.</li>
-          <li>Adjust <strong>Softness</strong> for smart-edge blending — partial-coverage border pixels get proportional
-            transparency and spill removal, so edges stay smooth with no colored halo.</li>
-          <li>Enable <strong>Remove edge-connected only</strong> to delete the outside background while keeping the same
-            color inside the subject.</li>
-          <li>Use the <strong>🪄 Wand</strong> mode to erase just one connected region by clicking it.</li>
-          <li>Download the transparent PNG.</li>
-        </ol>
-      </section>
-
-      <section class="reveal">
-        <h2>Your browser can already do this. It shouldn't cost $12/month.</h2>
-        <p>Some popular "online PNG tools" let you try the color remover — then ask you to <strong>buy a premium
-            plan</strong> to actually use it on real images, slap on usage limits, or gate the good features behind a
-          subscription. We think that's silly for something your browser can already do.</p>
-        <p>This tool does the same job — <strong>remove a color from a PNG and make it transparent</strong> — and adds
-          multi-color picking, wand region erase, smart-edge softening with spill removal, and auto-crop on top.
-          <strong>No paywall. No sign-up. No upload. No limits.</strong> Free, forever.
-        </p>
-
-        <h3>This tool vs. paywalled alternatives</h3>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Feature</th>
-                <th>This tool</th>
-                <th>Paywalled tools</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Remove any color</td>
-                <td><span class="good">Free</span></td>
-                <td><span class="bad">Often premium</span></td>
-              </tr>
-              <tr>
-                <td>Multi-color + wand erase</td>
-                <td><span class="good">Free</span></td>
-                <td><span class="bad">Often premium</span></td>
-              </tr>
-              <tr>
-                <td>Edge feather + auto-crop</td>
-                <td><span class="good">Yes</span></td>
-                <td><span class="bad">Varies</span></td>
-              </tr>
-              <tr>
-                <td>Usage limits</td>
-                <td><span class="good">None</span></td>
-                <td><span class="bad">Common</span></td>
-              </tr>
-              <tr>
-                <td>Sign-up required</td>
-                <td><span class="good">Never</span></td>
-                <td><span class="bad">Sometimes</span></td>
-              </tr>
-              <tr>
-                <td>Images uploaded to a server</td>
-                <td><span class="good">No — stays local</span></td>
-                <td><span class="bad">Often yes</span></td>
-              </tr>
-              <tr>
-                <td>Price</td>
-                <td><span class="good">$0</span></td>
-                <td><span class="bad">Subscription</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p style="margin-top:16px; font-size:13px; color:var(--muted)">Comparison is general and based on common
-          paywalled-tool patterns; specific products vary. We just believe a color remover should be free.</p>
-      </section>
-
-      <section class="reveal">
-        <h2>Questions worth answering</h2>
-
-        <details>
-          <summary>
-            <h3>How do I make a logo background transparent without Photoshop?</h3>
-          </summary>
-          <p>Upload your JPG or PNG logo. Click the background color (usually white or black) using the color picker.
-            Adjust the Similarity slider until the background disappears, then click Download.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>Why is there a white (or colored) outline around my cutout?</h3>
-          </summary>
-          <p>White or colored outlines (halos) occur due to anti-aliasing in the original image. To fix this, increase
-            the <strong>Softness</strong> slider. This activates our spill-removal algorithm, which calculates the true
-            color of edge pixels and blends them smoothly.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>Is this safe to use with confidential or client images?</h3>
-          </summary>
-          <p>Yes. Unlike cloud-based AI tools, this application is a static HTML file that runs JavaScript locally on
-            your device. It does not send network requests or store images on an external server. You can disconnect
-            your internet and the tool will still function.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>How do I erase the background without removing white text or a logo?</h3>
-          </summary>
-          <p>Enable the <strong>Remove edge-connected only</strong> toggle, or use the <strong>Wand mode</strong>. This
-            ensures the tool only deletes the white pixels touching the outer edge of the image, leaving enclosed white
-            elements (like text or shirt graphics) entirely intact.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>Is this really free — or is there a catch?</h3>
-          </summary>
-          <p>Yes — completely free with no limits, no sign-up, and no paywall. All processing runs in your browser using
-            client-side JavaScript. You can also <a download='png-color-remover.html' href='/'>download the tool</a> as
-            a single HTML file and run it offline.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>Do my images get sent to a server?</h3>
-          </summary>
-          <p>No. All image processing happens entirely in your browser using the HTML5 Canvas API. Your images never
-            leave your device and are never sent to any server.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>What file formats are supported?</h3>
-          </summary>
-          <p>The tool accepts <strong>PNG and JPG/JPEG</strong> images. The downloaded output is always a transparent
-            PNG.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>How do I remove a white background from a PNG?</h3>
-          </summary>
-          <p>Upload your PNG, then click the white area in the image preview to sample the color (or manually set the
-            color picker to white). Raise the <strong>Similarity</strong> slider until all shades of white are captured.
-            The <strong>Softness</strong> slider smooths the edges so there's no hard cutout line. Hit <em>Download
-              PNG</em> to save.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>Can I remove a green screen background?</h3>
-          </summary>
-          <p>Yes. Upload your green screen image and click the green area to pick the chroma key color. Raise
-            <strong>Similarity</strong> to cover all hues of green, and use <strong>Softness</strong> to handle edge
-            fringing for a smooth, halo-free cutout.
-          </p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>What does Wand mode actually do differently?</h3>
-          </summary>
-          <p>Wand mode removes only the connected region you click — like a magic wand selection. This is useful when
-            you want to erase the background but keep interior areas of the same color, for example removing a white
-            background while preserving a white shirt or logo.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>Can I target more than one color at a time?</h3>
-          </summary>
-          <p>Yes. Use the <strong>+ Add color</strong> button to queue up multiple colors. Each added color becomes a
-            chip you can manage independently. You can also mix Color and Wand targets in the same pass.</p>
-        </details>
-
-        <details>
-          <summary>
-            <h3>The edges still look tinted. How do I fix it?</h3>
-          </summary>
-          <p>Semi-transparent edge pixels contain a mix of the foreground and background color. Raise the
-            <strong>Softness</strong> slider — it activates the Blur-Fusion spill-removal algorithm, which unmixes the
-            edge pixels and recovers the true foreground color, eliminating the colored halo.
-          </p>
-        </details>
       </section>
     </div>
+
+    <footer class="footer reveal"
+      style="text-align: center; padding: 48px 24px 24px; font-size: 14px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 60px;">
+      <p style="margin-bottom: 12px;">
+        <a href="https://github.com/uynNee/free-png-color-remover" target="_blank"
+          style="color: var(--brand); text-decoration: none; font-weight: 500;">GitHub Repository</a> &middot;
+        <a download="png-color-remover.html" href="/" id="selfhost"
+          style="color: var(--brand); text-decoration: none; font-weight: 500;">Download Offline App</a>
+      </p>
+      <p>100% private. All processing is done locally in your browser. Images are never uploaded.</p>
+    </footer>
 
     <script>
       const drop = document.getElementById('drop');

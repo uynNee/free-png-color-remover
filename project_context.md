@@ -23,9 +23,9 @@ The core logic resides within the `<script>` tag in `index.html`.
 ## 3. Current Improvement Goals (Tasks to Solve)
 The current objective is to iterate on the application by completing the following specific tasks. These tasks range from UI/UX fixes to algorithmic enhancements.
 
-### Task 1: Canvas Responsiveness
-- **Goal**: Fix canvas interaction coordinates, specifically prioritizing mobile over desktop.
-- **Context**: The canvas uses CSS `object-fit: contain` inside a wrapper (`max-height: 55vh`). Currently, the coordinate mapping when a user clicks the canvas relies on `getBoundingClientRect()` relative to the DOM element's width/height. This leads to inaccurate `e.clientX` / `e.clientY` offsets on mobile or certain aspect ratios where the image doesn't fill the entire element.
+### Task 1: Canvas Responsiveness (Layout & Sizing)
+- **Goal**: Improve the placement, sizing, and spacing of the canvas elements so the interface fits better on a single screen, especially for mobile, while keeping the image large enough to see clearly.
+- **Context**: Currently, there are two separate canvas screens ("Original" and "Preview") which take up too much vertical space. This forces users to scroll constantly and makes it hard to see what's happening. The solution should consider merging the two screens or improving the layout so the image fits the full width on mobile and remains comfortably large on desktop, eliminating the redundant two-screen layout.
 
 ### Task 2: Exclude Specific Pixels (Pen Tool)
 - **Goal**: Implement a pen/brush tool with varied size options to manually exclude areas from color removal.
