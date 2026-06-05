@@ -353,20 +353,53 @@
     @media (min-width: 900px) {
       .panels {
         grid-template-columns: 1fr 1fr;
+        align-items: start;
       }
 
-      .col-images {
+      .panels-canvases {
         position: sticky;
-        top: 24px;
-        align-self: start;
+        top: 0;
+        height: 100vh;
+        overflow: hidden;
+        gap: 0;
+        padding: 0;
+        background: var(--bg-surface);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-float);
+        border: 1px solid #F1F5F9;
       }
 
-      .col-images .canvas-wrap {
-        max-height: 38vh;
+      .panels-canvases .card {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        border-bottom: 1px solid var(--border);
+        padding: 20px 24px;
       }
 
-      .col-images canvas {
-        max-height: 38vh;
+      .panels-canvases .card:last-child {
+        border-bottom: none;
+      }
+
+      .panels-canvases .card h2 {
+        flex-shrink: 0;
+      }
+
+      .panels-canvases .canvas-wrap {
+        flex: 1;
+        min-height: 0;
+        max-height: none;
+      }
+
+      .panels-canvases canvas {
+        width: auto;
+        max-width: 100%;
+        max-height: 100%;
+        height: auto;
       }
     }
 
@@ -397,7 +430,8 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
       border: 2px solid var(--border);
-      background:
+      background-color: #E8EDF3;
+      background-image:
         linear-gradient(45deg, #F8FAFC 25%, transparent 25%),
         linear-gradient(-45deg, #F8FAFC 25%, transparent 25%),
         linear-gradient(45deg, transparent 75%, #F8FAFC 75%),
@@ -408,6 +442,12 @@
 
     .canvas-wrap.solid {
       background: var(--bgc, #000);
+    }
+
+    .panels-canvases {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
     }
 
     canvas {
@@ -1080,20 +1120,24 @@
         width: 100%;
       }
 
-      #dstWrap {
+      .panels-canvases .card {
+        padding: 16px;
+      }
+
+      .panels-canvases .card:last-child {
         position: sticky;
         top: 0;
         z-index: 20;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .panels-canvases .card:last-child h2 {
+        display: none;
+      }
+
+      #dstWrap {
         max-height: 30vh;
-        border-radius: var(--radius-md);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-        background:
-          linear-gradient(45deg, #F8FAFC 25%, #FFFFFF 25%),
-          linear-gradient(-45deg, #F8FAFC 25%, #FFFFFF 25%),
-          linear-gradient(45deg, #FFFFFF 75%, #F8FAFC 75%),
-          linear-gradient(-45deg, #FFFFFF 75%, #F8FAFC 75%);
-        background-size: 24px 24px;
-        background-position: 0 0, 0 12px, 12px -12px, 12px 0;
+        background: var(--bg-surface);
       }
 
       #dstWrap.solid {
@@ -1258,14 +1302,18 @@
     </header>
 
     <div class="panels" id="panels" style="display:none">
-      <div class="card">
-        <h2>Original</h2>
-        <div class="canvas-wrap"><canvas id="src"></canvas></div>
-        <p class="hint">👆 Click anywhere to sample a color</p>
+      <div class="panels-canvases">
+        <div class="card">
+          <h2>Original</h2>
+          <div class="canvas-wrap"><canvas id="src"></canvas></div>
+          <p class="hint">👆 Click anywhere to sample a color</p>
+        </div>
+        <div class="card">
+          <h2>Preview</h2>
+          <div class="canvas-wrap" id="dstWrap"><canvas id="dst"></canvas></div>
+        </div>
       </div>
       <div class="card">
-        <h2>Preview</h2>
-        <div class="canvas-wrap" id="dstWrap"><canvas id="dst"></canvas></div>
         <div class="controls">
           <div class="row">
             <span class="seg">
