@@ -156,17 +156,16 @@
       --color-white: #ffffff;
       --color-white-rgb: 255, 255, 255;
 
-      /* Pastel Pink Neutrals */
-      --color-neutral-50: #fdfafc;
-      --color-neutral-100: #fbf5f8;
-      --color-neutral-200: #f4e8f0;
-      --color-neutral-300: #ead6e3;
-      --color-neutral-400: #d6b4cd;
-      --color-neutral-500: #b58ca9;
-      --color-neutral-600: #8c6380;
-      --color-neutral-800: #3a2234;
-      /* Soft plum */
-      --color-neutral-900: #241120;
+      /* Clean, Premium Neutrals (Highly Neutral Grays) */
+      --color-neutral-50: #fbfbfc;
+      --color-neutral-100: #f4f4f6;
+      --color-neutral-200: #eaeaea;
+      --color-neutral-300: #dcdcdc;
+      --color-neutral-400: #bababa;
+      --color-neutral-500: #949497;
+      --color-neutral-600: #6d6d70;
+      --color-neutral-800: #333336;
+      --color-neutral-900: #1b1b1d;
 
       /* Page background & surfaces */
       --bg-page: var(--color-neutral-50);
@@ -220,7 +219,7 @@
 
       --color-danger: #EF4444;
 
-      --color-info-text: #8c6380;
+      --color-info-text: var(--color-neutral-600);
       --color-info-bg: var(--color-neutral-100);
       --color-info-border: var(--color-neutral-200);
 
@@ -238,7 +237,7 @@
       --radius-sm: 12px;
 
       /* Shadow System - Clean & Very Subtle */
-      --shadow-color-rgb: 58, 34, 52;
+      --shadow-color-rgb: 51, 51, 54;
       --shadow-float: 0 16px 32px -8px rgba(var(--shadow-color-rgb), 0.04);
       --shadow-btn: 0 6px 12px -4px rgba(var(--color-brand-rgb), 0.15);
       --shadow-card: 0 24px 48px -12px rgba(var(--shadow-color-rgb), 0.04), inset 0 2px 4px rgba(var(--color-white-rgb), 0.4);
@@ -422,8 +421,6 @@
       .panels>.card:last-child {
         position: sticky;
         top: 32px;
-        max-height: calc(100vh - 64px);
-        overflow-y: auto;
       }
 
       .panels>.card:last-child::-webkit-scrollbar {
@@ -848,7 +845,7 @@
     /* Segments */
     .seg {
       display: inline-flex;
-      background: rgba(255, 255, 255, 0.4);
+      background: var(--color-info-bg);
       border-radius: var(--radius-md);
       padding: 6px;
       gap: 6px;
